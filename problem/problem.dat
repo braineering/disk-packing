@@ -1,0 +1,10 @@
+#===============================================================================
+# PROBLEM (Data)
+#===============================================================================
+
+data;
+
+param SHEET := 150; # Sheet area (m^2)
+param SIDE  := 10;  # Room side (m)
+param HMIN  := 3;   # Room minimum height (m)
+param HMAX  := 4.5; # Room maximum height (m)
