@@ -1,0 +1,8 @@
+=============================================================================
+TANK PROBLEM
+Model : tank.mod
+Data  : tank.dat
+Solver: SNOPT
+Author: Giacomo Marciani <gmarciani@acm.org>
+        Michele Porretta <mporretta@acm.org> 
+==============================================================================
