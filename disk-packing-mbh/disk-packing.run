@@ -1,0 +1,103 @@
+#===============================================================================
+# DISK PACKING (Script)
+#===============================================================================
+reset;
+reset options;
+
+#===============================================================================
+# HEADER
+#===============================================================================
+print
+"============================================================================= \
+DISK PACKING PROBLEM \
+Model : disk-packing.mod \
+Data  : disk-packing.dat \
+Solver: SNOPT \
+Author: Giacomo Marciani <gmarciani@acm.org> \
+        Michele Porretta <mporretta@acm.org> \
+=============================================================================="
+> out.txt;
+
+#===============================================================================
+# PROBLEM DECLARATION
+#===============================================================================
+model disk-packing.mod;
+data disk-packing.dat;
+
+#===============================================================================
+# AMPL OPTIONS
+#===============================================================================
+option prompt1 "[AMPL]> ";
+option display_width 80;
+option display_1col 0;
+option relax_integrality 1;
+
+#===============================================================================
+# SOLVER OPTIONS
+#===============================================================================
+option snopt_options "outlev=1";
+#option snopt_options "relax=1";
+#option snopt_options 'Feasibility_tolerance=1.0e-12';
+#option snopt_options 'iterations=1000000';
+option solver snopt;
+
+#===============================================================================
+# PROBLEM PARAMETERS
+#===============================================================================
+param Xlb := 0.0; # lower bound for disks center (X coordinate)
+param Xub := 1.0; # upper bound for disks center (X coordinate)
+param Ylb := 0.0; # lower bound for disks center (Y coordinate)
+param Yub := 1.0; # upper bound for disks center (Y coordinate)
+
+#===============================================================================
+# ALGORITHM PARAMETERS
+#===============================================================================
+param Xstart{1..N}; # initial    disks center (X coordinate)
+param Ystart{1..N}; # initial    disks center (Y coordinate)
+param Xlocal{1..N}; # local      disks center (X coordinate)
+param Ylocal{1..N}; # local      disks center (Y coordinate)
+param Xbest {1..N}; # local best disks center (X coordinate)
+param Ybest {1..N}; # local best disks center (Y coordinate)
+param Xtilde{1..N}; # current disks center (X coordinate)
+param Ytilde{1..N}; # current disks center (Y coordinate)
+param noImprove;    # number of local steps with no improvement
+param maxSearch;    # number of outer loop iterations
+param nLocalOpt;    # number of local optimisation steps
+param fBest;        # best objective function
+param fMax;         # current max objective function
+
+let maxSearch := 1000;
+let nLocalOpt := 0;
+
+for {k in 1..maxSearch}{ # for k in maxSearch
+  #=============================================================================
+  # START
+  #=============================================================================
+  let {i in 1..N} Xstart[i] := Uniform(Xlb,Xub); # random initial disks center (X coordinate)
+  let {i in 1..N} Ystart[i] := Uniform(Ylb,Yub); # random initial disks center (Y coordinate)
+  let {i in 1..N} X[i] := Xstart[i] # set decision variables to random initial disks center (X coordinate)
+  let {i in 1..N} Y[i] := Ystart[i] # set decision variables random initial disks center (X coordinate)
+
+  #=============================================================================
+  # LOCAL OPTIMISATION
+  #=============================================================================
+  solve; # local optimisation step
+  let nLocalOpt := nLocalOpt+1; # increment number of local optimisation steps
+
+  #=============================================================================
+  # UPDATE
+  #=============================================================================
+  if (solve_result_num == 0) then {
+    let {i in 1..N} Xlocal := X[i]; # local update for disks center (X coordinate)
+    let {i in 1..N} Ylocal := Y[i]; # local update for disks center (Y coordinate)
+    let fBest := f;                 # local update for objective function
+    let {i in 1..N} Xbest[i] := Xlocal[i] # local best update for disks center (X coordinate)
+    let {i in 1..N} Ybest[i] := Ylocal[i] # local best update for disks center (Y coordinate)
+    printf "Found stationary point with objective function value f = %12.6f\n", f >> out.txt
+  } else {
+  }
+
+
+
+
+} # for k in maxSearch
