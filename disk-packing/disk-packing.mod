@@ -1,33 +1,41 @@
 #===============================================================================
 # DISK PACKING (Model)
 #
-# Maximization of radius and number of circles inside an unitary square.
+# Maximize the radius and number of non-overlapping disks in the unit square.
 #===============================================================================
 reset;
 
 #===============================================================================
 # PARAMETERS
 #===============================================================================
-param SHEET >= 0;    # Sheet area (m^2)
-param SIDE  >= 0;    # Room side (m)
-param HMIN  >= 0;    # Room minimum height (m)
-param HMAX  >= 0;    # Room maximum height (m)
+param N >= 0; # Number of disks
 
 #===============================================================================
 # DECISION VARIABLES
 #===============================================================================
-var x1 >= 0, <= SIDE;   # tank width (m)
-var x2 >= 0;            # tank height (m)
+var X {i in 1..N} := Uniform(0,1), >=0, <=1; # Disks center (X coordinate)
+var Y {i in 1..N} := Uniform(0,1), >=0, <=1; # Disks center (Y coordinate)
+var r             := Uniform(0,1), >=0, <=1; # Disks radius
 
 #===============================================================================
 # OBJECTIVE
 #===============================================================================
-maximize volume: (x1^2)*x2; # Tank volume (m^3)
+maximize radius: r; # Maximize disks radius
 
 #===============================================================================
 # BOUNDS
 #===============================================================================
-subject to sheet_area:  # Available sheet area (m^2)
-    x1^2+4*x1*x2=SHEET;
-subject to room_height: # Available room height (m)
-    x2<=(SIDE-x1)*(HMAX-HMIN)/SIDE+HMIN;
+subject to noOverlapping {i in 1..N, j in 1..N: j>i}: # Non overlapping disks
+  (X[i]-X[j])**2 + (Y[i]-Y[j])**2 <= 4*(r**2);
+
+subject to containerX_lb {i in 1..N}: # Disks within container (lower bound on disks center X coordinate)
+  r <= X[i];
+
+subject to containerX2_ub {i in 1..N}: # Disks within container (upper bound on disks center X coordinate)
+  X[i] <= 1-r;
+
+subject to containerY_lb {i in 1..N}: # Disks within container (lower bound on disks center Y coordinate)
+  r <= Y[i];
+
+subject to containerY2_ub {i in 1..N}: # Disks within container (upper bound on disks center Y coordinate)
+  Y[i] <= 1-r;

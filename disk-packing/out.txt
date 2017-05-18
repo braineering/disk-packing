@@ -1,8 +1,10 @@
-=============================================================================
-TANK PROBLEM
-Model : tank.mod
-Data  : tank.dat
-Solver: SNOPT
-Author: Giacomo Marciani <gmarciani@acm.org>
+============================================================================= 
+DISK PACKING PROBLEM 
+Model : disk-packing.mod 
+Data  : disk-packing.dat 
+Solver: SNOPT 
+Author: Giacomo Marciani <gmarciani@acm.org> 
         Michele Porretta <mporretta@acm.org> 
 ==============================================================================
+Number of disks: 10
+Radius: 0.500000
