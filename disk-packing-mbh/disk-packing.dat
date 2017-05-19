@@ -5,3 +5,5 @@
 data;
 
 param N := 10; # Number of disks
+
+param FstarPackomania := 0.421279543983903432768821760651
