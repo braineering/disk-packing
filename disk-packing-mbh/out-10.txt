@@ -1,0 +1,44 @@
+============================================================================= 
+DISK PACKING PROBLEM 
+Model : disk-packing.mod 
+Data  : disk-packing.dat 
+Solver: SNOPT 
+Author: Giacomo Marciani <gmarciani@acm.org> 
+        Michele Porretta <mporretta@acm.org> 
+==============================================================================
+Found stationary point with objective function f =     0.415416
+Perturbed starting point with objective function value f =     0.415416
+Perturbed starting point with objective function value f =     0.415418
+Found better stationary point with objective function f =     0.415418
+Perturbed starting point with objective function value f =     0.415418
+Perturbed starting point with objective function value f =     0.415429
+Found better stationary point with objective function f =     0.415429
+Perturbed starting point with objective function value f =     0.415429
+Perturbed starting point with objective function value f =     0.415430
+Found better stationary point with objective function f =     0.415430
+Perturbed starting point with objective function value f =     0.415430
+Perturbed starting point with objective function value f =     0.420143
+Found better stationary point with objective function f =     0.420143
+Perturbed starting point with objective function value f =     0.420143
+Perturbed starting point with objective function value f =     0.420143
+Found better stationary point with objective function f =     0.420143
+Perturbed starting point with objective function value f =     0.420143
+Perturbed starting point with objective function value f =     0.398201
+No improvement for perturbated point
+Perturbed starting point with objective function value f =     0.398201
+Perturbed starting point with objective function value f =     0.421280
+Found better stationary point with objective function f =     0.421280
+Found global optimum with error 0.000000026897
+Found global optimum with error 0.000000026897
+Best value:     0.421280
+[1] Center (0.283621359720,0.688494998668)
+[2] Center (0.000000000000,0.376989997337)
+[3] Center (0.988522236526,1.000000000000)
+[4] Center (1.000000000000,0.578876850269)
+[5] Center (0.609308921371,0.000000000000)
+[6] Center (0.188029404284,0.000000000000)
+[7] Center (1.000000000000,0.157597333182)
+[8] Center (0.609308895124,0.421279603468)
+[9] Center (0.000000000000,1.000000000000)
+[10] Center (0.567242719439,1.000000000000)
+Number of local optimisation steps: 8

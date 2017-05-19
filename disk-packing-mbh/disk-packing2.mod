@@ -9,7 +9,10 @@ reset;
 #===============================================================================
 # PARAMETERS
 #===============================================================================
-param N >= 0; # Number of disks
+param N >= 0;    # current number of disks
+param NMin >= 2; # minimum number of disks
+param NMax >= 2; # maximum number of disks
+param FSTAR {i in NMin..NMax}; # optimal values according to Packomania
 
 #===============================================================================
 # DECISION VARIABLES

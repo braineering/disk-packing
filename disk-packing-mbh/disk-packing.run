@@ -65,18 +65,18 @@ param Ylocal{1..N}; # local      disks center (Y coordinate)
 param Xtilde{1..N}; # perturbed  disks center (X coordinate)
 param Ytilde{1..N}; # perturbed  disks center (Y coordinate)
 
-param Xbest {1..N}; # local best disks center (X coordinate)
-param Ybest {1..N}; # local best disks center (Y coordinate)
-param Xmax{1..N};   # best       disks center (X coordinate)
-param Ymax{1..N};   # best       disks center (Y coordinate)
+param Xbest{1..N}; # local best disks center (X coordinate)
+param Ybest{1..N}; # local best disks center (Y coordinate)
+param Xmax{1..N};  # best       disks center (X coordinate)
+param Ymax{1..N};  # best       disks center (Y coordinate)
 
-param Xpert{1..N};  # perturbation for disks center (X coordinate)
-param Ypert{1..N};  # perturbation for disks center (Y coordinate)
-param XpertLb; # lower bound for perturbation (X coordinate)
-param XpertUb; # upper bound for perturbation (X coordinate)
-param YpertLb; # lower bound for perturbation (X coordinate)
-param YpertUb; # lower bound for perturbation (X coordinate)
-param alpha;   # perturbation degree
+param Xpert{1..N};   # perturbation for disks center (X coordinate)
+param Ypert{1..N};   # perturbation for disks center (Y coordinate)
+param XpertLb{1..N}; # lower bound for perturbation (X coordinate)
+param XpertUb{1..N}; # upper bound for perturbation (X coordinate)
+param YpertUb{1..N}; # lower bound for perturbation (X coordinate)
+param YpertLb{1..N}; # lower bound for perturbation (X coordinate)
+param alpha;         # perturbation degree
 
 param maxSearch;    # maximum number of outer loop iterations
 param maxNoImprove; # maximum number of optimisation steps with no improvement
@@ -95,11 +95,11 @@ let maxNoImprove := 50;
 let noImprove := 0;
 let nLocalOpt := 0;
 
-let fBest := 0.0
+let fBest := 0.0;
 let fMax  := 0.0;
-let fStar := 0.0;
-#let fStar := FstarPackomania;
-let epsilon := 0.0001
+#let fStar := 0.0;
+let fStar := FSTAR[N];
+let epsilon := 0.0001;
 let alpha := 0.3;
 
 for {k in 1..maxSearch}{ # for k in maxSearch
@@ -108,8 +108,8 @@ for {k in 1..maxSearch}{ # for k in maxSearch
   #=============================================================================
   let {i in 1..N} Xstart[i] := Uniform(Xlb,Xub); # random initial disks center (X coordinate)
   let {i in 1..N} Ystart[i] := Uniform(Ylb,Yub); # random initial disks center (Y coordinate)
-  let {i in 1..N} X[i] := Xstart[i] # set decision variables to random initial disks center (X coordinate)
-  let {i in 1..N} Y[i] := Ystart[i] # set decision variables to random initial disks center (X coordinate)
+  let {i in 1..N} X[i] := Xstart[i]; # set decision variables to random initial disks center (X coordinate)
+  let {i in 1..N} Y[i] := Ystart[i]; # set decision variables to random initial disks center (X coordinate)
 
   #=============================================================================
   # LOCAL OPTIMISATION
@@ -121,11 +121,11 @@ for {k in 1..maxSearch}{ # for k in maxSearch
   # UPDATE
   #=============================================================================
   if (solve_result_num == 0) then { # if solve_result_num == 0
-    let {i in 1..N} Xlocal := X[i]; # update local disks center (X coordinate)
-    let {i in 1..N} Ylocal := Y[i]; # update local disks center (Y coordinate)
+    let {i in 1..N} Xlocal[i] := X[i]; # update local disks center (X coordinate)
+    let {i in 1..N} Ylocal[i] := Y[i]; # update local disks center (Y coordinate)
     let fBest := f;                 # update local best for objective function
-    let {i in 1..N} Xbest[i] := Xlocal[i] # update local best for disks center (X coordinate)
-    let {i in 1..N} Ybest[i] := Ylocal[i] # update local best for disks center (Y coordinate)
+    let {i in 1..N} Xbest[i] := Xlocal[i]; # update local best for disks center (X coordinate)
+    let {i in 1..N} Ybest[i] := Ylocal[i]; # update local best for disks center (Y coordinate)
     printf "Found stationary point with objective function f = %12.6f\n", f >> (fileResults);
 
     #===========================================================================
@@ -133,8 +133,8 @@ for {k in 1..maxSearch}{ # for k in maxSearch
     #===========================================================================
     if (fBest > fMax) then { # if fBest > fMax
       let fMax := fBest; # update maximum for objective function with local best
-      let {i in 1..N} Xmax[i] := Xlocal[i] # update maximum for disks center (X coordinate)
-      let {i in 1..N} Ymax[i] := Ylocal[i] # update maximum for disks center (Y coordinate)
+      let {i in 1..N} Xmax[i] := Xlocal[i]; # update maximum for disks center (X coordinate)
+      let {i in 1..N} Ymax[i] := Ylocal[i]; # update maximum for disks center (Y coordinate)
       let error := abs(fStar-fMax); # error w.r.t to Fstar
       if (error < epsilon) then { # if error < epsilon
         printf "Found global optimum with error %1.12f\n", error >> (fileResults);
@@ -149,8 +149,8 @@ for {k in 1..maxSearch}{ # for k in maxSearch
       #=========================================================================
       let {i in 1..N} Xstart[i] := Uniform(Xlb,Xub); # random initial disks center (X coordinate)
       let {i in 1..N} Ystart[i] := Uniform(Ylb,Yub); # random initial disks center (Y coordinate)
-      let {i in 1..N} X[i] := Xstart[i] # set decision variables to random initial disks center (X coordinate)
-      let {i in 1..N} Y[i] := Ystart[i] # set decision variables to random initial disks center (X coordinate)
+      let {i in 1..N} X[i] := Xstart[i]; # set decision variables to random initial disks center (X coordinate)
+      let {i in 1..N} Y[i] := Ystart[i]; # set decision variables to random initial disks center (X coordinate)
 
       #=========================================================================
       # REPEAT: LOCAL OPTIMISATION
@@ -162,11 +162,11 @@ for {k in 1..maxSearch}{ # for k in maxSearch
     #===========================================================================
     # REPEAT: UPDATE
     #===========================================================================
-    let {i in 1..N} Xlocal := X[i]; # update local disks center (X coordinate)
-    let {i in 1..N} Ylocal := Y[i]; # update local disks center (Y coordinate)
+    let {i in 1..N} Xlocal[i] := X[i]; # update local disks center (X coordinate)
+    let {i in 1..N} Ylocal[i] := Y[i]; # update local disks center (Y coordinate)
     let fBest := f;                 # update local best for objective function
-    let {i in 1..N} Xbest[i] := Xlocal[i] # update local best for disks center (X coordinate)
-    let {i in 1..N} Ybest[i] := Ylocal[i] # update local best for disks center (Y coordinate)
+    let {i in 1..N} Xbest[i] := Xlocal[i]; # update local best for disks center (X coordinate)
+    let {i in 1..N} Ybest[i] := Ylocal[i]; # update local best for disks center (Y coordinate)
     printf "Found stationary point with objective function f = %12.6f\n", f >> (fileResults);
 
     #===========================================================================
@@ -174,8 +174,8 @@ for {k in 1..maxSearch}{ # for k in maxSearch
     #===========================================================================
     if (fBest > fMax) then { # if fBest > fMax
       let fMax := fBest; # update maximum for objective function with local best
-      let {i in 1..N} Xmax[i] := Xlocal[i] # update maximum for disks center (X coordinate)
-      let {i in 1..N} Ymax[i] := Ylocal[i] # update maximum for disks center (Y coordinate)
+      let {i in 1..N} Xmax[i] := Xlocal[i]; # update maximum for disks center (X coordinate)
+      let {i in 1..N} Ymax[i] := Ylocal[i]; # update maximum for disks center (Y coordinate)
       let error := abs(fStar-fMax); # error w.r.t to Fstar
       if (error < epsilon) then { # if error < epsilon
         printf "Found global optimum with error %1.12f\n", error >> (fileResults);
@@ -199,10 +199,10 @@ for {k in 1..maxSearch}{ # for k in maxSearch
     #===========================================================================
     #let {i in 1..N} Xpert[i] := Uniform(-0.5,0.5);   # random perturbation for disks center (X coordinate)
     #let {i in 1..N} Ypert[i] := Uniform(-0.5,0.5);   # random perturbation for disks center (Y coordinate)
-    let {i in 1..N} XpertUb :=        alpha * (Xlocal[i]-Xlb);  # set lower bound for perturbation (X coordinate)
-    let {i in 1..N} XpertUb := (-1) * alpha * (Xub-Xlocal[i]);  # set upper bound for perturbation (X coordinate)
-    let {i in 1..N} YpertUb :=        alpha * (Ylocal[i]-Ylb);  # set lower bound for perturbation (Y coordinate)
-    let {i in 1..N} YpertUb := (-1) * alpha * (Yub-Ylocal[i]);  # set upper bound for perturbation (Y coordinate)
+    let {i in 1..N} XpertLb[i] :=        alpha * (Xlocal[i]-Xlb);  # set lower bound for perturbation (X coordinate)
+    let {i in 1..N} XpertUb[i] := (-1) * alpha * (Xub-Xlocal[i]);  # set upper bound for perturbation (X coordinate)
+    let {i in 1..N} YpertLb[i] :=        alpha * (Ylocal[i]-Ylb);  # set lower bound for perturbation (Y coordinate)
+    let {i in 1..N} YpertUb[i] := (-1) * alpha * (Yub-Ylocal[i]);  # set upper bound for perturbation (Y coordinate)
     let {i in 1..N} Xpert[i] := Uniform(XpertLb[i],XpertUb[i]); # random perturbation for disks center (X coordinate)
     let {i in 1..N} Ypert[i] := Uniform(YpertLb[i],YpertUb[i]); # random perturbation for disks center (Y coordinate)
     let {i in 1..N} Xtilde[i] := Xlocal[i]+Xpert[i]; # set random perturbation for disks center (X coordinate)
@@ -222,18 +222,18 @@ for {k in 1..maxSearch}{ # for k in maxSearch
       #===========================================================================
       # IMPROVE: UPDATE
       #===========================================================================
-      let {i in 1..N} Xlocal := X[i]; # local update for disks center (X coordinate)
-      let {i in 1..N} Ylocal := Y[i]; # local update for disks center (Y coordinate)
+      let {i in 1..N} Xlocal[i] := X[i]; # local update for disks center (X coordinate)
+      let {i in 1..N} Ylocal[i] := Y[i]; # local update for disks center (Y coordinate)
       let fBest := f;                 # local update for objective function
-      let {i in 1..N} Xbest[i] := Xlocal[i] # local best update for disks center (X coordinate)
-      let {i in 1..N} Ybest[i] := Ylocal[i] # local best update for disks center (Y coordinate)
+      let {i in 1..N} Xbest[i] := Xlocal[i]; # local best update for disks center (X coordinate)
+      let {i in 1..N} Ybest[i] := Ylocal[i]; # local best update for disks center (Y coordinate)
       let noImprove := 0; # reset number of optimisation step with no improvement
       printf "Found better stationary point with objective function f = %12.6f\n", f >> (fileResults);
 
       if (fBest > fMax) then { # if fBest > fMax
         let fMax := fBest; # update maximum of objective function with local best
-        let {i in 1..N} Xmax[i] := Xlocal[i] # update disks center (X coordinate)
-        let {i in 1..N} Ymax[i] := Ylocal[i] # update disks center (Y coordinate)
+        let {i in 1..N} Xmax[i] := Xlocal[i]; # update disks center (X coordinate)
+        let {i in 1..N} Ymax[i] := Ylocal[i]; # update disks center (Y coordinate)
         let error := abs(fStar-fMax); # error w.r.t to Fstar
         if (error < epsilon) then { # if error < epsilon
           printf "Found global optimum with error %1.12f\n", error >> (fileResults);
