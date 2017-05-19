@@ -1,6 +1,6 @@
 ============================================================================= 
 DISK PACKING PROBLEM 
-Model : disk-packing.mod 
+Model : disk-packing-equiv.mod 
 Data  : disk-packing.dat 
 Solver: SNOPT 
 Author: Giacomo Marciani <gmarciani@acm.org> 
@@ -24,7 +24,7 @@ Perturbed starting point with objective function value f =     0.420143
 Found better stationary point with objective function f =     0.420143
 Perturbed starting point with objective function value f =     0.420143
 Perturbed starting point with objective function value f =     0.398201
-No improvement for perturbated point
+No improvement for pertubed point
 Perturbed starting point with objective function value f =     0.398201
 Perturbed starting point with objective function value f =     0.421280
 Found better stationary point with objective function f =     0.421280
@@ -41,4 +41,4 @@ Best value:     0.421280
 [8] Center (0.609308895124,0.421279603468)
 [9] Center (0.000000000000,1.000000000000)
 [10] Center (0.567242719439,1.000000000000)
-Number of local optimisation steps: 8
+Number of local optimization steps: 8
