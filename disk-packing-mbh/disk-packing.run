@@ -54,6 +54,7 @@ param Xlb := 0.0; # lower bound for disks center (X coordinate)
 param Xub := 1.0; # upper bound for disks center (X coordinate)
 param Ylb := 0.0; # lower bound for disks center (Y coordinate)
 param Yub := 1.0; # upper bound for disks center (Y coordinate)
+#param Flb := 0.0; # lower bound for objective function
 
 #===============================================================================
 # ALGORITHM PARAMETERS
@@ -78,7 +79,7 @@ param YpertUb{1..N}; # lower bound for perturbation (X coordinate)
 param YpertLb{1..N}; # lower bound for perturbation (X coordinate)
 param alpha;         # perturbation degree (1)
 param xi;            # perturbation degree (2)
-#param fPertUb;       # upper bound for pertubation (objective function)
+#param FpertUb;      # upper bound for pertubation (objective function)
 
 param maxSearch;     # maximum number of outer loop iterations
 param maxNoImprove;  # maximum number of optimization steps with no improvement
@@ -197,7 +198,7 @@ for {k in 1..maxSearch}{ # for k in maxSearch
   #=============================================================================
   repeat while (noImprove <= maxNoImprove) { # repeat while (noImprove <= maxNoImprove)
     #===========================================================================
-    # PERTURBATION
+    # PERTURBATION (TYPE 1)
     #===========================================================================
     #let {i in 1..N} XpertLb[i] := (-1) * alpha * (Xlocal[i]-Xlb);  # set lower bound for perturbation (X coordinate)
     #let {i in 1..N} XpertUb[i] :=        alpha * (Xub-Xlocal[i]);  # set upper bound for perturbation (X coordinate)
@@ -211,17 +212,20 @@ for {k in 1..maxSearch}{ # for k in maxSearch
     #let {i in 1..N} Y[i] := Ytilde[i];                             # set decision variables to random perturbation for disks center (Y coordinate)
     #printf "Perturbed starting point with objective function value f = %12.6f\n", f >> (fileResults);
 
+    #===========================================================================
+    # PERTURBATION (TYPE 2)
+    #===========================================================================
     let {i in 1..N} XpertLb[i] := max(0.0, Xlocal[i]-xi);  # set lower bound for perturbation (X coordinate)
     let {i in 1..N} XpertUb[i] := min(1.0, Xlocal[i]+xi);  # set upper bound for perturbation (X coordinate)
     let {i in 1..N} YpertLb[i] := max(0.0, Ylocal[i]-xi);  # set lower bound for perturbation (Y coordinate)
     let {i in 1..N} YpertUb[i] := min(1.0, Ylocal[i]+xi);  # set upper bound for perturbation (Y coordinate)
-    let {i in 1..N} Xtilde[i] := Uniform(XpertLb[i],XpertUb[i]);   # set random perturbation for disks center (X coordinate)
-    let {i in 1..N} Ytilde[i] := Uniform(YpertLb[i],YpertUb[i]);   # set random perturbation for disks center (Y coordinate)
-    let {i in 1..N} X[i] := Xtilde[i];                             # set decision variables to random perturbation for disks center (X coordinate)
-    let {i in 1..N} Y[i] := Ytilde[i];                             # set decision variables to random perturbation for disks center (Y coordinate)
-    #let fPertUb := min{i in 1..N, j in 1..N: i != j}
-    #  (sqrt((Xtilde[i]-Xtilde[j])**2+(Ytilde[i]-Ytilde[j])**2));   # set upper bound for perturbation (objective function)
-    #let f := Uniform(0.0, fPertUb);                                 # set objective function to random perturbation
+    let {i in 1..N} Xtilde[i] := Uniform(XpertLb[i],XpertUb[i]);   # set random perturbed disks center (X coordinate)
+    let {i in 1..N} Ytilde[i] := Uniform(YpertLb[i],YpertUb[i]);   # set random perturbed disks center (Y coordinate)
+    let {i in 1..N} X[i] := Xtilde[i];                             # set decision variables to random perturbed disks center (X coordinate)
+    let {i in 1..N} Y[i] := Ytilde[i];                             # set decision variables to random perturbed disks center (Y coordinate)
+    #let FpertUb := min{i in 1..N, j in 1..N: i != j}
+    #  (sqrt((Xtilde[i]-Xtilde[j])**2+(Ytilde[i]-Ytilde[j])**2));   # set upper bound for perurbed objective function
+    #let f := Uniform(Flb, FpertUb);                                 # set random perturbed objective function
     printf "Perturbed starting point with objective function value f = %12.6f\n", f >> (fileResults);
 
     #===========================================================================
