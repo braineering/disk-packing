@@ -6,7 +6,7 @@ data;
 
 param N := 10; # Number of disks
 
-
+#Data of best distances by www.packomania.com 
 let fstar[2]:=1.414213562373095048801688724220;
 let fstar[3]:=1.035276180410083049395595350499;
 let fstar[4]:=1.000000000000000000000000000000;
