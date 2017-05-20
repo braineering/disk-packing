@@ -288,10 +288,7 @@ for {k in 1..maxSearch}{ # for k in maxSearch
 #===============================================================================
 # SHOW RESULTS
 #===============================================================================
-<<<<<<< HEAD
-printf "Best value: %12.6f\n", fMax >> (fileResults);
-printf "Best value of radius: %12.6f\n", fMax/(2*(fMax+1)) >> (fileResults);
-=======
+
 printf "Elapsed time: %.12f\n", _ampl_elapsed_time >> (fileLog);
 printf "Elapsed time: %.12f\n", _ampl_elapsed_time >> (fileRes);
 
@@ -300,10 +297,12 @@ printf "Number of local optimization steps: %d\n", nLocalOpt >> (fileRes);
 
 printf "Best value: %.12f\n", fMax >> (fileLog);
 printf "Best value: %.12f\n", fMax >> (fileRes);
+printf "Best value of radius: %12.6f\n", fMax/(2*(fMax+1)) >> (fileLog);
+printf "Best value of radius: %12.6f\n", fMax/(2*(fMax+1)) >> (fileRes);
 
 print "Solution:" >> (fileLog);
 print "Solution:" >> (fileRes);
->>>>>>> ff5d151da21e827bfe2d2bbc40adde588d68d411
+
 for {i in 1..N} { # for i in 1..N
   printf "[%d] Center (%.12f,%.12f)\n", i, Xmax[i], Ymax[i] >> (fileLog);
   printf "[%d] Center (%.12f,%.12f)\n", i, Xmax[i], Ymax[i] >> (fileRes);
