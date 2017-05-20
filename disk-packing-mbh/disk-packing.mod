@@ -13,9 +13,9 @@ param N >= 0; # Number of disks
 #===============================================================================
 # DECISION VARIABLES
 #===============================================================================
-var X {i in 1..N} := Uniform(0,1), >=0, <=1; # Disks center (X coordinate)
-var Y {i in 1..N} := Uniform(0,1), >=0, <=1; # Disks center (Y coordinate)
-var r             := Uniform(0,1), >=0, <=1; # Disks radius
+var X{i in 1..N} := Uniform(0,1), >=0, <=1; # Disks center (X coordinate)
+var Y{i in 1..N} := Uniform(0,1), >=0, <=1; # Disks center (Y coordinate)
+var r            := Uniform(0,1), >=0, <=1; # Disks radius
 
 #===============================================================================
 # OBJECTIVE

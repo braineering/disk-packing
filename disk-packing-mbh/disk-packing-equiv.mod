@@ -9,22 +9,25 @@ reset;
 #===============================================================================
 # PARAMETERS
 #===============================================================================
-param N >= 0; # Number of disks
+param N >= 0;    # current number of disks
+param NMin >= 2; # minimum number of disks
+param NMax >= 2; # maximum number of disks
+param FSTAR {i in NMin..NMax}; # optimal values according to Packomania
 
 #===============================================================================
 # DECISION VARIABLES
 #===============================================================================
-var X {i in 1..N} >=0, <=1; # Disks center (X coordinate)
-var Y {i in 1..N} >=0, <=1; # Disks center (Y coordinate)
-var d <=1; # Disks distance
+var X {i in 1..N} >=0, <=1; # disks center (X coordinate)
+var Y {i in 1..N} >=0, <=1; # disks center (Y coordinate)
+var f <= 1;                 # disks distance
 
 #===============================================================================
 # OBJECTIVE
 #===============================================================================
-maximize distance: d; # Maximize distance
+maximize distance: f; # maximize distance
 
 #===============================================================================
 # BOUNDS
 #===============================================================================
-subject to noMinOfd {i in 1..N, j in 1..N: j>i}:
-  sqrt((X[i]-X[j])**2 + (Y[i]-Y[j])**2) >=d;
+subject to minDistance {i in 1..N, j in 1..N: j>i}: # distance bound
+  (X[i]-X[j])**2 + (Y[i]-Y[j])**2 >= f**2;
