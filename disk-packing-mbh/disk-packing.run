@@ -27,11 +27,12 @@ let fileResults := ("out-"&N&".txt");
 #===============================================================================
 # SOLVER OPTIONS
 #===============================================================================
-option snopt_options "outlev=1";
+#option snopt_options "outlev=1";
 #option snopt_options "relax=1";
 #option snopt_options 'Feasibility_tolerance=1.0e-12';
 #option snopt_options 'iterations=1000000';
-option solver snopt;
+#option solver snopt;
+option solver knitro;
 
 #===============================================================================
 # HEADER
@@ -277,6 +278,7 @@ for {k in 1..maxSearch}{ # for k in maxSearch
 # SHOW RESULTS
 #===============================================================================
 printf "Best value: %12.6f\n", fMax >> (fileResults);
+printf "Best value of radius: %12.6f\n", fMax/(2*(fMax+1)) >> (fileResults);
 for {i in 1..N} { # for i in 1..N
   printf "[%d] Center (%1.12f,%1.12f)\n", i, Xmax[i], Ymax[i] >> (fileResults);
 } # for i in 1..N
