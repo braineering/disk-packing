@@ -17,9 +17,9 @@ param FSTAR {i in NMin..NMax}; # optimal values according to Packomania
 #===============================================================================
 # DECISION VARIABLES
 #===============================================================================
-var X {i in 1..N} >=0, <=1; # disks center (X coordinate)
-var Y {i in 1..N} >=0, <=1; # disks center (Y coordinate)
-var f <= 1;                 # disks distance
+var X {i in 1..N} >= 0.0, <= 1.0; # disks center (X coordinate)
+var Y {i in 1..N} >= 0.0, <= 1.0; # disks center (Y coordinate)
+var f <= 1.0;                     # disks distance
 
 #===============================================================================
 # OBJECTIVE
@@ -29,5 +29,5 @@ maximize distance: f; # maximize distance
 #===============================================================================
 # BOUNDS
 #===============================================================================
-subject to minDistance {i in 1..N, j in 1..N: j>i}: # distance bound
+subject to minDistance {i in 1..N, j in 1..N: j != i}: # distance bound
   (X[i]-X[j])**2 + (Y[i]-Y[j])**2 >= f**2;
