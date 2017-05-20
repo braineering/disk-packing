@@ -1,0 +1,35 @@
+#=============================================================================
+| DISK PACKING PROBLEM 
+| Model : disk-packing-equiv.mod 
+| Data  : disk-packing.dat 
+| Solver: KNITRO 
+| Author: Giacomo Marciani <gmarciani@acm.org> 
+|        Michele Porretta <mporretta@acm.org> 
+|
+| Parameters: 
+|  N: 10 
+#==============================================================================
+
+Found stationary point with objective function f = 0.406495778642
+Perturbed starting point with objective function value f = 0.406495778642
+Perturbed starting point with objective function value f = 0.410672119108
+Found better stationary point with objective function f = 0.410672119108
+Perturbed starting point with objective function value f = 0.410672119108
+Perturbed starting point with objective function value f = 0.421279537190
+Found better stationary point with objective function f = 0.421279537190
+Found global optimum with error 0.000000006794
+Found global optimum with error 0.000000006794
+Elapsed time: 0.008378000000
+Number of local optimization steps: 3
+Best value: 0.421279537190
+Solution:
+[1] Center (0.390691133940,0.421279538206)
+[2] Center (0.000000001874,0.157597226906)
+[3] Center (0.999999999754,0.999999999583)
+[4] Center (0.999999999227,0.376989955137)
+[5] Center (0.390691140245,0.000000000174)
+[6] Center (0.432757233470,0.999999999103)
+[7] Center (0.716378649608,0.688494977817)
+[8] Center (0.811970679424,0.000000001109)
+[9] Center (0.000000000205,0.578876768208)
+[10] Center (0.011477671703,0.999999999523)
