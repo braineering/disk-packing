@@ -30,6 +30,12 @@ let fileLog := ("out/out-"&N&"_log.txt");
 #===============================================================================
 # SOLVER OPTIONS
 #===============================================================================
+
+#option snopt_options "outlev=1";
+#option snopt_options "relax=1";
+#option snopt_options 'Feasibility_tolerance=1.0e-12';
+#option snopt_options 'iterations=1000000';
+#option solver snopt;
 option knitro_options "outlev=1";
 option solver knitro;
 
@@ -282,6 +288,7 @@ for {k in 1..maxSearch}{ # for k in maxSearch
 #===============================================================================
 # SHOW RESULTS
 #===============================================================================
+
 printf "Elapsed time: %.12f\n", _ampl_elapsed_time >> (fileLog);
 printf "Elapsed time: %.12f\n", _ampl_elapsed_time >> (fileRes);
 
@@ -290,9 +297,12 @@ printf "Number of local optimization steps: %d\n", nLocalOpt >> (fileRes);
 
 printf "Best value: %.12f\n", fMax >> (fileLog);
 printf "Best value: %.12f\n", fMax >> (fileRes);
+printf "Best value of radius: %12.6f\n", fMax/(2*(fMax+1)) >> (fileLog);
+printf "Best value of radius: %12.6f\n", fMax/(2*(fMax+1)) >> (fileRes);
 
 print "Solution:" >> (fileLog);
 print "Solution:" >> (fileRes);
+
 for {i in 1..N} { # for i in 1..N
   printf "[%d] Center (%.12f,%.12f)\n", i, Xmax[i], Ymax[i] >> (fileLog);
   printf "[%d] Center (%.12f,%.12f)\n", i, Xmax[i], Ymax[i] >> (fileRes);
