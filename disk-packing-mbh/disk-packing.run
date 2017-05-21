@@ -44,7 +44,7 @@ option solver knitro;
 #===============================================================================
 param header symbolic; # file header
 let header := sprintf(
-"#=============================================================================\
+"#===============================================================================\
 | DISK PACKING PROBLEM \
 | Model : disk-packing-equiv.mod \
 | Data  : disk-packing.dat \
@@ -54,11 +54,12 @@ let header := sprintf(
 |\
 | Parameters: \
 |  N: %d \
-#==============================================================================\n",
+#===============================================================================\n",
 N);
 
 print header > (fileRes);
 print header > (fileLog);
+
 #===============================================================================
 # PROBLEM PARAMETERS
 #===============================================================================
@@ -89,8 +90,7 @@ param XpertLb{1..N}; # lower bound for perturbation (X coordinate)
 param XpertUb{1..N}; # upper bound for perturbation (X coordinate)
 param YpertUb{1..N}; # lower bound for perturbation (X coordinate)
 param YpertLb{1..N}; # lower bound for perturbation (X coordinate)
-param alpha;         # perturbation degree (1)
-param xi;            # perturbation degree (2)
+param xi;            # perturbation degree
 #param FpertUb;      # upper bound for pertubation (objective function)
 
 param maxSearch;     # maximum number of outer loop iterations
@@ -114,8 +114,7 @@ let fBest := 0.0;
 let fMax  := 0.0;
 let fStar := FSTAR[N];
 let epsilon := 0.0001;
-let alpha := 0.5;
-let xi := alpha / sqrt(N);
+let xi := 0.5 / sqrt(N);
 
 for {k in 1..maxSearch}{ # for k in maxSearch
   #=============================================================================
@@ -295,10 +294,13 @@ printf "Elapsed time: %.12f\n", _ampl_elapsed_time >> (fileRes);
 printf "Number of local optimization steps: %d\n", nLocalOpt >> (fileLog);
 printf "Number of local optimization steps: %d\n", nLocalOpt >> (fileRes);
 
-printf "Best value: %.12f\n", fMax >> (fileLog);
-printf "Best value: %.12f\n", fMax >> (fileRes);
-printf "Best value of radius: %12.6f\n", fMax/(2*(fMax+1)) >> (fileLog);
-printf "Best value of radius: %12.6f\n", fMax/(2*(fMax+1)) >> (fileRes);
+printf "Best value of distance: %.12f\n", fMax >> (fileLog);
+printf "Best value of distance: %.12f\n", fMax >> (fileRes);
+printf "Best value of radius: %12.6f\n", fMax/(2.0*(fMax+1.0)) >> (fileLog);
+printf "Best value of radius: %12.6f\n", fMax/(2.0*(fMax+1.0)) >> (fileRes);
+
+printf "\n#===============================================================================\n\n" >> (fileLog);
+printf "\n#===============================================================================\n\n" >> (fileRes);
 
 print "Solution:" >> (fileLog);
 print "Solution:" >> (fileRes);
