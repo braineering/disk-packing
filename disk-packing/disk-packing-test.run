@@ -121,8 +121,8 @@ let fStar := FSTAR[N];
 let epsilon := 0.0001;
 let xi := 0.5 / sqrt(N);
 
-let startTime := _ampl_elapsed_time; # reset start time
-let nLocalOpt := 0;                  # reset number of local optimizations
+let startTime := time(); # reset start time
+let nLocalOpt := 0;      # reset number of local optimizations
 
 for {k in 1..maxSearch}{ # for k in maxSearch
   #=============================================================================
@@ -292,7 +292,7 @@ for {k in 1..maxSearch}{ # for k in maxSearch
   let noImprove := 0; # reset number of steps with no improvement
 } # for k in 1..maxSearch
 
-let endTime := _ampl_elapsed_time; # set end time
+let endTime := time(); # set end time
 
 #===============================================================================
 # SHOW RESULTS
