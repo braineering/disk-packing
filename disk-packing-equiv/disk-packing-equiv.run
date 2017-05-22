@@ -102,6 +102,9 @@ param fStar;         # objective function for global optimum
 param error;         # error w.r.t. Fstar
 param epsilon;       # epsilon (used for error tolerance)
 
+param startTime;     # the time at the beginning of an iteration
+param endTime;       # the time at the end of an iteration
+
 let maxSearch := 1000;
 let maxNoImprove := 100;
 let noImprove := 0;
@@ -112,6 +115,8 @@ let fMax  := 0.0;
 let fStar := FSTAR[N];
 let epsilon := 0.0001;
 let xi := 0.5 / sqrt(N);
+
+let startTime := time(); # reset start time
 
 for {k in 1..maxSearch}{ # for k in maxSearch
   #=============================================================================
@@ -281,12 +286,14 @@ for {k in 1..maxSearch}{ # for k in maxSearch
   let noImprove := 0; # reset number of steps with no improvement
 } # for k in 1..maxSearch
 
+let endTime := time(); # set end time
+
 #===============================================================================
 # SHOW RESULTS
 #===============================================================================
 
-printf "Elapsed time: %.12f\n", _ampl_elapsed_time >> (fileLog);
-printf "Elapsed time: %.12f\n", _ampl_elapsed_time >> (fileRes);
+printf "Elapsed time: %.12f\n", (endTime-startTime) >> (fileLog);
+printf "Elapsed time: %.12f\n", (endTime-startTime) >> (fileRes);
 
 printf "Local optimizations: %d\n", nLocalOpt >> (fileLog);
 printf "Local optimizations: %d\n", nLocalOpt >> (fileRes);
