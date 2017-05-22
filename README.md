@@ -1,20 +1,41 @@
-# OMBD 2016
+# DISK PACKING
+
+*Disk packing problem, leveraging AMPL and Matlab.*
 
 *Coursework in Optimization Models for Big Data 2016/2017*
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+The disk packing problem is a well-known NP-hard problem.
+It consists in the maximization of the radius and number of non-overlapping disks in the unit square.
+In this work, we propose two equivalent formulation of the disk packing problem.
 
 ## Usage
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Run the standard formulation:
+
+  $disk-packing> ampl disk-packing.run
+
+View the output:
+
+  $disk-packing> cat out/out-[N]\_res.txt
+
+where *[N]* is the number of disks.
+
+Visualize the result executing the Matlab script `disk-packing/disk-packing.m`.
+
+Run the equivalent formulation:
+
+  $disk-packing-equiv> ampl disk-packing-equiv.run
+
+View the output:
+
+  $disk-packing-equiv> cat out/out-[N]\_res.txt
+
+where *[N]* is the number of disks.
+
+Visualize the result executing the Matlab script `disk-packing-equiv/disk-packing-equiv.m`.
 
 ## Authors
 Giacomo Marciani, [gmarciani@acm.org](mailto:gmarciani@acm.org)
+
 Michele Porretta, [mporretta@acm.org](mailto:mporretta@acm.org)
 
 ## License
