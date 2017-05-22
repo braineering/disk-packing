@@ -1,17 +1,18 @@
 #===============================================================================
-# DISK PACKING PROBLEM, EQUIVALENT FORMULATION (Script)
+# DISK PACKING PROBLEM (Script for tests)
 #
 # Authors: Giacomo Marciani <gmarciani@acm.org>
 #          Michele Porretta <mporretta@acm.org>
 #===============================================================================
+
 reset;
 reset options;
 
 #===============================================================================
 # PROBLEM DECLARATION
 #===============================================================================
-model disk-packing-equiv.mod;
-data disk-packing-equiv.dat;
+model disk-packing.mod;
+data disk-packing.dat;
 
 #===============================================================================
 # AMPL OPTIONS
@@ -24,11 +25,11 @@ option relax_integrality 1;
 #===============================================================================
 # OUTPUT PARAMETERS
 #===============================================================================
-param fileRes symbolic; # output file for results
-param fileLog symbolic; # output file for detailed log
+param fileTest symbolic; # output file for results
+#param fileLog symbolic; # output file for detailed log
 
-let fileRes := ("out/out-"&N&"_res.txt");
-let fileLog := ("out/out-"&N&"_log.txt");
+let fileTest := ("out/out-"&N&"_test.txt");
+#let fileLog := ("out/out-"&N&"_log.txt");
 
 #===============================================================================
 # SOLVER OPTIONS
@@ -49,19 +50,19 @@ param header symbolic; # file header
 let header := sprintf(
 "#===============================================================================\
 | DISK PACKING PROBLEM \
-| Model : disk-packing-equiv.mod \
-| Data  : disk-packing-equiv.dat \
+| Model : disk-packing.mod \
+| Data  : disk-packing.dat \
 | Solver: KNITRO \
 | Author: Giacomo Marciani <gmarciani@acm.org> \
 |         Michele Porretta <mporretta@acm.org> \
 |\
 | Parameters: \
 |  N: %d \
-#==============================================================================\
+#===============================================================================\
 ", N);
 
-print header > (fileRes);
-print header > (fileLog);
+print header > (fileTest);
+#print header > (fileLog);
 
 #===============================================================================
 # PROBLEM PARAMETERS
@@ -108,6 +109,9 @@ param fStar;         # objective function for global optimum
 param error;         # error w.r.t. Fstar
 param epsilon;       # epsilon (used for error tolerance)
 
+param startTime;     # the time at the beginning of an iteration
+param endTime;       # the time at the end of an iteration
+
 let maxSearch := 1000;
 let maxNoImprove := 100;
 let noImprove := 0;
@@ -118,6 +122,11 @@ let fMax  := 0.0;
 let fStar := FSTAR[N];
 let epsilon := 0.0001;
 let xi := 0.5 / sqrt(N);
+
+for {iter in 1..10} { # for iter in 1..10
+
+let startTime := _ampl_elapsed_time; # reset start time
+let nLocalOpt := 0;                  # reset number of local optimizations
 
 for {k in 1..maxSearch}{ # for k in maxSearch
   #=============================================================================
@@ -143,7 +152,7 @@ for {k in 1..maxSearch}{ # for k in maxSearch
     let fBest := f;                        # update local best for objective function
     let {i in 1..N} Xbest[i] := Xlocal[i]; # update local best for disks center (X coordinate)
     let {i in 1..N} Ybest[i] := Ylocal[i]; # update local best for disks center (Y coordinate)
-    printf "Found stationary point with objective function f = %.12f\n", f >> (fileLog);
+    #printf "Found stationary point with objective function f = %.12f\n", f >> (fileLog);
 
     #===========================================================================
     # EVALUATE UPDATE
@@ -154,7 +163,7 @@ for {k in 1..maxSearch}{ # for k in maxSearch
       let {i in 1..N} Ymax[i] := Ylocal[i]; # update maximum for disks center (Y coordinate)
       let error := abs(fStar-fMax);         # error w.r.t to Fstar
       if (error < epsilon) then { # if error < epsilon
-        printf "Found global optimum with error %.12f\n", error >> (fileLog);
+        #printf "Found global optimum with error %.12f\n", error >> (fileLog);
         break;
       } # if error < epsilon
     } # if fBest > fMax
@@ -184,7 +193,7 @@ for {k in 1..maxSearch}{ # for k in maxSearch
     let fBest := f;                        # update local best for objective function
     let {i in 1..N} Xbest[i] := Xlocal[i]; # update local best for disks center (X coordinate)
     let {i in 1..N} Ybest[i] := Ylocal[i]; # update local best for disks center (Y coordinate)
-    printf "Found stationary point with objective function f = %.12f\n", f >> (fileLog);
+    #printf "Found stationary point with objective function f = %.12f\n", f >> (fileLog);
 
     #===========================================================================
     # REPEAT: EVALUATE UPDATE
@@ -195,7 +204,7 @@ for {k in 1..maxSearch}{ # for k in maxSearch
       let {i in 1..N} Ymax[i] := Ylocal[i]; # update maximum for disks center (Y coordinate)
       let error := abs(fStar-fMax);         # error w.r.t to Fstar
       if (error < epsilon) then { # if error < epsilon
-        printf "Found global optimum with error %.12f\n", error >> (fileLog);
+        #printf "Found global optimum with error %.12f\n", error >> (fileLog);
         break;
       } # if error < epsilon
     } # if fBest > fMax
@@ -203,7 +212,7 @@ for {k in 1..maxSearch}{ # for k in maxSearch
 
   let error := abs(fStar-fMax); # error w.r.t to Fstar
   if (error < epsilon) then { # if error < epsilon
-    printf "Found global optimum with error %.12f\n", error >> (fileLog);
+    #printf "Found global optimum with error %.12f\n", error >> (fileLog);
     break;
   } # if error < epsilon
 
@@ -240,14 +249,14 @@ for {k in 1..maxSearch}{ # for k in maxSearch
     #let FpertUb := min{i in 1..N, j in 1..N: i != j}
     #  (sqrt((Xtilde[i]-Xtilde[j])**2+(Ytilde[i]-Ytilde[j])**2));   # set upper bound for perurbed objective function
     #let f := Uniform(Flb, FpertUb);                                 # set random perturbed objective function
-    printf "Perturbed starting point with objective function value f = %.12f\n", f >> (fileLog);
+    #printf "Perturbed starting point with objective function value f = %.12f\n", f >> (fileLog);
 
     #===========================================================================
     # PERTURBATION: LOCAL OPTIMIZATION
     #===========================================================================
     solve; # local optimization step
     let nLocalOpt := nLocalOpt+1; # increment number of local optimization steps
-    printf "Perturbed starting point with objective function value f = %.12f\n", f >> (fileLog);
+    #printf "Perturbed starting point with objective function value f = %.12f\n", f >> (fileLog);
 
     if (f > fBest) && (solve_result_num == 0) then { # if (f > fBest) && (solve_result_num == 0)
       #===========================================================================
@@ -259,7 +268,7 @@ for {k in 1..maxSearch}{ # for k in maxSearch
       let {i in 1..N} Xbest[i] := Xlocal[i]; # local best update for disks center (X coordinate)
       let {i in 1..N} Ybest[i] := Ylocal[i]; # local best update for disks center (Y coordinate)
       let noImprove := 0;                    # reset number of optimization step with no improvement
-      printf "Found better stationary point with objective function f = %.12f\n", f >> (fileLog);
+      #printf "Found better stationary point with objective function f = %.12f\n", f >> (fileLog);
 
       if (fBest > fMax) then { # if fBest > fMax
         let fMax := fBest;                    # update maximum of objective function with local best
@@ -267,49 +276,52 @@ for {k in 1..maxSearch}{ # for k in maxSearch
         let {i in 1..N} Ymax[i] := Ylocal[i]; # update disks center (Y coordinate)
         let error := abs(fStar-fMax);         # error w.r.t to Fstar
         if (error < epsilon) then { # if error < epsilon
-          printf "Found global optimum with error %.12f\n", error >> (fileLog);
+          #printf "Found global optimum with error %.12f\n", error >> (fileLog);
           break;
         } # if error < epsilon
       } # if fBest > fMax
     } # if (f > fBest) && (solve_result_num == 0)
     else { # if (f <= fBest) || (solve_result_num != 0)
       let noImprove := noImprove+1; # increment number of steps with no improvement
-      printf "No improvement for perturbed point\n" >> (fileLog);
+      #printf "No improvement for perturbed point\n" >> (fileLog);
     } # if (f <= fBest) || (solve_result_num != 0)
   } # repeat while (noImprove <= maxNoImprove)
 
   let error := abs(fStar-fMax); # error w.r.t to Fstar
   if (error < epsilon) then { # if error < epsilon
-    printf "Found global optimum with error %.12f\n", error >> (fileLog);
+    #printf "Found global optimum with error %.12f\n", error >> (fileLog);
     break;
   } # if error < epsilon
 
   let noImprove := 0; # reset number of steps with no improvement
 } # for k in 1..maxSearch
 
+let endTime := _ampl_elapsed_time; # set end time
+
 #===============================================================================
 # SHOW RESULTS
 #===============================================================================
 
-printf "Elapsed time: %.12f\n", _ampl_elapsed_time >> (fileLog);
-printf "Elapsed time: %.12f\n", _ampl_elapsed_time >> (fileRes);
+#printf "Elapsed time: %.12f\n", _ampl_elapsed_time >> (fileLog);
+printf "Elapsed time: %.12f\n", (endTime-startTime) >> (fileTest);
 
-printf "Local optimizations: %d\n", nLocalOpt >> (fileLog);
-printf "Local optimizations: %d\n", nLocalOpt >> (fileRes);
+#printf "Local optimizations: %d\n", nLocalOpt >> (fileLog);
+printf "Local optimizations: %d\n", nLocalOpt >> (fileTest);
 
-printf "\n#===============================================================================\n\n" >> (fileLog);
-printf "\n#===============================================================================\n\n" >> (fileRes);
+#printf "\n#===============================================================================\n\n" >> (fileLog);
+#printf "\n#===============================================================================\n\n" >> (fileTest);
 
-printf "Objective (distance): %.12f\n", fMax >> (fileLog);
-printf "Objective (distance): %.12f\n", fMax >> (fileRes);
+#printf "Objective (radius): %.12f\n", fMax >> (fileLog);
+printf "Objective (radius): %.12f\n", fMax >> (fileTest);
 
-printf "\n#===============================================================================\n\n" >> (fileLog);
-printf "\n#===============================================================================\n\n" >> (fileRes);
+#printf "\n#===============================================================================\n\n" >> (fileLog);
+printf "\n#===============================================================================\n\n" >> (fileTest);
 
-print "Solution:" >> (fileLog);
-print "Solution:" >> (fileRes);
+#print "Solution:" >> (fileLog);
+#print "Solution:" >> (fileTest);
 
-for {i in 1..N} { # for i in 1..N
-  printf "[%d] (%.12f,%.12f)\n", i, Xmax[i], Ymax[i] >> (fileLog);
-  printf "[%d] (%.12f,%.12f)\n", i, Xmax[i], Ymax[i] >> (fileRes);
-} # for i in 1..N
+#for {i in 1..N} { # for i in 1..N
+#  printf "[%d] (%.12f,%.12f)\n", i, Xmax[i], Ymax[i] >> (fileLog);
+#  printf "[%d] (%.12f,%.12f)\n", i, Xmax[i], Ymax[i] >> (fileTest);
+#} # for i in 1..N
+} # for iter in 1..10

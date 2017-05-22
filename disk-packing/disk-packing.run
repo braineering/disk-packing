@@ -54,12 +54,12 @@ let header := sprintf(
 | Data  : disk-packing.dat \
 | Solver: KNITRO \
 | Author: Giacomo Marciani <gmarciani@acm.org> \
-|        Michele Porretta <mporretta@acm.org> \
+|         Michele Porretta <mporretta@acm.org> \
 |\
 | Parameters: \
 |  N: %d \
 #===============================================================================\
-");
+", N);
 
 print header > (fileRes);
 print header > (fileLog);
