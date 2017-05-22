@@ -1,0 +1,310 @@
+#===============================================================================
+# DISK PACKING (Script)
+#===============================================================================
+reset;
+reset options;
+
+#===============================================================================
+# PROBLEM DECLARATION
+#===============================================================================
+model disk-packing.mod;
+data disk-packing.dat;
+
+#===============================================================================
+# AMPL OPTIONS
+#===============================================================================
+option prompt1 "[AMPL]> ";
+option display_width 80;
+option display_1col 0;
+option relax_integrality 1;
+
+#===============================================================================
+# OUTPUT PARAMETERS
+#===============================================================================
+param fileRes symbolic; # output file for results
+param fileLog symbolic; # output file for detailed log
+
+let fileRes := ("out/out-"&N&"_res.txt");
+let fileLog := ("out/out-"&N&"_log.txt");
+
+#===============================================================================
+# SOLVER OPTIONS
+#===============================================================================
+
+#option snopt_options "outlev=1";
+#option snopt_options "relax=1";
+#option snopt_options 'Feasibility_tolerance=1.0e-12';
+#option snopt_options 'iterations=1000000';
+#option solver snopt;
+option knitro_options "outlev=1";
+option solver knitro;
+
+#===============================================================================
+# HEADER
+#===============================================================================
+param header symbolic; # file header
+let header := sprintf(
+"#===============================================================================\
+| DISK PACKING PROBLEM \
+| Model : disk-packing.mod \
+| Data  : disk-packing.dat \
+| Solver: KNITRO \
+| Author: Giacomo Marciani <gmarciani@acm.org> \
+|        Michele Porretta <mporretta@acm.org> \
+|\
+| Parameters: \
+|  N: %d \
+#==============================================================================\n");
+
+print header > (fileRes);
+print header > (fileLog);
+
+#===============================================================================
+# PROBLEM PARAMETERS
+#===============================================================================
+param Xlb := 0.0; # lower bound for disks center (X coordinate)
+param Xub := 1.0; # upper bound for disks center (X coordinate)
+param Ylb := 0.0; # lower bound for disks center (Y coordinate)
+param Yub := 1.0; # upper bound for disks center (Y coordinate)
+#param Flb := 0.0; # lower bound for objective function
+
+#===============================================================================
+# ALGORITHM PARAMETERS
+#===============================================================================
+param Xstart{1..N};  # initial    disks center (X coordinate)
+param Ystart{1..N};  # initial    disks center (Y coordinate)
+param Xlocal{1..N};  # local      disks center (X coordinate)
+param Ylocal{1..N};  # local      disks center (Y coordinate)
+param Xtilde{1..N};  # perturbed  disks center (X coordinate)
+param Ytilde{1..N};  # perturbed  disks center (Y coordinate)
+
+param Xbest{1..N};   # local best disks center (X coordinate)
+param Ybest{1..N};   # local best disks center (Y coordinate)
+param Xmax{1..N};    # best       disks center (X coordinate)
+param Ymax{1..N};    # best       disks center (Y coordinate)
+
+param Xpert{1..N};   # perturbation for disks center (X coordinate)
+param Ypert{1..N};   # perturbation for disks center (Y coordinate)
+param XpertLb{1..N}; # lower bound for perturbation (X coordinate)
+param XpertUb{1..N}; # upper bound for perturbation (X coordinate)
+param YpertUb{1..N}; # lower bound for perturbation (X coordinate)
+param YpertLb{1..N}; # lower bound for perturbation (X coordinate)
+param xi;            # perturbation degree
+#param FpertUb;      # upper bound for pertubation (objective function)
+
+param maxSearch;     # maximum number of outer loop iterations
+param maxNoImprove;  # maximum number of optimization steps with no improvement
+param noImprove;     # number of local steps with no improvement
+param nLocalOpt;     # number of local optimization steps
+
+param fBest;         # objective function for current local best
+param fMax;          # objective function for current best
+param fStar;         # objective function for global optimum
+
+param error;         # error w.r.t. Fstar
+param epsilon;       # epsilon (used for error tolerance)
+
+let maxSearch := 1000;
+let maxNoImprove := 100;
+let noImprove := 0;
+let nLocalOpt := 0;
+
+let fBest := 0.0;
+let fMax  := 0.0;
+let fStar := FSTAR[N];
+let epsilon := 0.0001;
+let xi := 0.5 / sqrt(N);
+
+for {k in 1..maxSearch}{ # for k in maxSearch
+  #=============================================================================
+  # START
+  #=============================================================================
+  let {i in 1..N} Xstart[i] := Uniform(Xlb,Xub); # random initial disks center (X coordinate)
+  let {i in 1..N} Ystart[i] := Uniform(Ylb,Yub); # random initial disks center (Y coordinate)
+  let {i in 1..N} X[i] := Xstart[i];             # set decision variables to random initial disks center (X coordinate)
+  let {i in 1..N} Y[i] := Ystart[i];             # set decision variables to random initial disks center (X coordinate)
+
+  #=============================================================================
+  # LOCAL OPTIMIZATION
+  #=============================================================================
+  solve; # local optimization step
+  let nLocalOpt := nLocalOpt+1; # increment number of local optimization steps
+
+  #=============================================================================
+  # UPDATE
+  #=============================================================================
+  if (solve_result_num == 0) then { # if solve_result_num == 0
+    let {i in 1..N} Xlocal[i] := X[i];     # update local disks center (X coordinate)
+    let {i in 1..N} Ylocal[i] := Y[i];     # update local disks center (Y coordinate)
+    let fBest := f;                        # update local best for objective function
+    let {i in 1..N} Xbest[i] := Xlocal[i]; # update local best for disks center (X coordinate)
+    let {i in 1..N} Ybest[i] := Ylocal[i]; # update local best for disks center (Y coordinate)
+    printf "Found stationary point with objective function f = %.12f\n", f >> (fileLog);
+
+    #===========================================================================
+    # EVALUATE UPDATE
+    #===========================================================================
+    if (fBest > fMax) then { # if fBest > fMax
+      let fMax := fBest;                    # update maximum for objective function with local best
+      let {i in 1..N} Xmax[i] := Xlocal[i]; # update maximum for disks center (X coordinate)
+      let {i in 1..N} Ymax[i] := Ylocal[i]; # update maximum for disks center (Y coordinate)
+      let error := abs(fStar-fMax);         # error w.r.t to Fstar
+      if (error < epsilon) then { # if error < epsilon
+        printf "Found global optimum with error %.12f\n", error >> (fileLog);
+        break;
+      } # if error < epsilon
+    } # if fBest > fMax
+  }
+  else { # if solve_result_num != 0
+    repeat { # repeat until solve_result_num == 0
+      #=========================================================================
+      # REPEAT: START
+      #=========================================================================
+      let {i in 1..N} Xstart[i] := Uniform(Xlb,Xub); # random initial disks center (X coordinate)
+      let {i in 1..N} Ystart[i] := Uniform(Ylb,Yub); # random initial disks center (Y coordinate)
+      let {i in 1..N} X[i] := Xstart[i];             # set decision variables to random initial disks center (X coordinate)
+      let {i in 1..N} Y[i] := Ystart[i];             # set decision variables to random initial disks center (X coordinate)
+
+      #=========================================================================
+      # REPEAT: LOCAL OPTIMIZATION
+      #=========================================================================
+      solve; # local optimization step
+      let nLocalOpt := nLocalOpt + 1; # increment number of local optimization steps
+    } until (solve_result_num == 0);  # end repeat until solve_result_num == 0
+
+    #===========================================================================
+    # REPEAT: UPDATE
+    #===========================================================================
+    let {i in 1..N} Xlocal[i] := X[i];     # update local disks center (X coordinate)
+    let {i in 1..N} Ylocal[i] := Y[i];     # update local disks center (Y coordinate)
+    let fBest := f;                        # update local best for objective function
+    let {i in 1..N} Xbest[i] := Xlocal[i]; # update local best for disks center (X coordinate)
+    let {i in 1..N} Ybest[i] := Ylocal[i]; # update local best for disks center (Y coordinate)
+    printf "Found stationary point with objective function f = %.12f\n", f >> (fileLog);
+
+    #===========================================================================
+    # REPEAT: EVALUATE UPDATE
+    #===========================================================================
+    if (fBest > fMax) then { # if fBest > fMax
+      let fMax := fBest;                    # update maximum for objective function with local best
+      let {i in 1..N} Xmax[i] := Xlocal[i]; # update maximum for disks center (X coordinate)
+      let {i in 1..N} Ymax[i] := Ylocal[i]; # update maximum for disks center (Y coordinate)
+      let error := abs(fStar-fMax);         # error w.r.t to Fstar
+      if (error < epsilon) then { # if error < epsilon
+        printf "Found global optimum with error %.12f\n", error >> (fileLog);
+        break;
+      } # if error < epsilon
+    } # if fBest > fMax
+  } # if solve_result_num != 0
+
+  let error := abs(fStar-fMax); # error w.r.t to Fstar
+  if (error < epsilon) then { # if error < epsilon
+    printf "Found global optimum with error %.12f\n", error >> (fileLog);
+    break;
+  } # if error < epsilon
+
+  #=============================================================================
+  # LOOP
+  #=============================================================================
+  repeat while (noImprove <= maxNoImprove) { # repeat while (noImprove <= maxNoImprove)
+    #===========================================================================
+    # PERTURBATION (TYPE 1)
+    #===========================================================================
+    #let {i in 1..N} XpertLb[i] := (-1) * alpha * (Xlocal[i]-Xlb);  # set lower bound for perturbation (X coordinate)
+    #let {i in 1..N} XpertUb[i] :=        alpha * (Xub-Xlocal[i]);  # set upper bound for perturbation (X coordinate)
+    #let {i in 1..N} YpertLb[i] := (-1) * alpha * (Ylocal[i]-Ylb);  # set lower bound for perturbation (Y coordinate)
+    #let {i in 1..N} YpertUb[i] :=        alpha * (Yub-Ylocal[i]);  # set upper bound for perturbation (Y coordinate)
+    #let {i in 1..N} Xpert[i] := Uniform(XpertLb[i],XpertUb[i]);    # random perturbation for disks center (X coordinate)
+    #let {i in 1..N} Ypert[i] := Uniform(YpertLb[i],YpertUb[i]);    # random perturbation for disks center (Y coordinate)
+    #let {i in 1..N} Xtilde[i] := Xlocal[i]+Xpert[i];               # set random perturbation for disks center (X coordinate)
+    #let {i in 1..N} Ytilde[i] := Ylocal[i]+Ypert[i];               # set random perturbation for disks center (Y coordinate)
+    #let {i in 1..N} X[i] := Xtilde[i];                             # set decision variables to random perturbation for disks center (X coordinate)
+    #let {i in 1..N} Y[i] := Ytilde[i];                             # set decision variables to random perturbation for disks center (Y coordinate)
+    #printf "Perturbed starting point with objective function value f = %12.6f\n", f >> (fileLog);
+
+    #===========================================================================
+    # PERTURBATION (TYPE 2)
+    #===========================================================================
+    let {i in 1..N} XpertLb[i] := max(0.0, Xlocal[i]-xi);  # set lower bound for perturbation (X coordinate)
+    let {i in 1..N} XpertUb[i] := min(1.0, Xlocal[i]+xi);  # set upper bound for perturbation (X coordinate)
+    let {i in 1..N} YpertLb[i] := max(0.0, Ylocal[i]-xi);  # set lower bound for perturbation (Y coordinate)
+    let {i in 1..N} YpertUb[i] := min(1.0, Ylocal[i]+xi);  # set upper bound for perturbation (Y coordinate)
+    let {i in 1..N} Xtilde[i] := Uniform(XpertLb[i],XpertUb[i]);   # set random perturbed disks center (X coordinate)
+    let {i in 1..N} Ytilde[i] := Uniform(YpertLb[i],YpertUb[i]);   # set random perturbed disks center (Y coordinate)
+    let {i in 1..N} X[i] := Xtilde[i];                             # set decision variables to random perturbed disks center (X coordinate)
+    let {i in 1..N} Y[i] := Ytilde[i];                             # set decision variables to random perturbed disks center (Y coordinate)
+    #let FpertUb := min{i in 1..N, j in 1..N: i != j}
+    #  (sqrt((Xtilde[i]-Xtilde[j])**2+(Ytilde[i]-Ytilde[j])**2));   # set upper bound for perurbed objective function
+    #let f := Uniform(Flb, FpertUb);                                 # set random perturbed objective function
+    printf "Perturbed starting point with objective function value f = %.12f\n", f >> (fileLog);
+
+    #===========================================================================
+    # PERTURBATION: LOCAL OPTIMIZATION
+    #===========================================================================
+    solve; # local optimization step
+    let nLocalOpt := nLocalOpt+1; # increment number of local optimization steps
+    printf "Perturbed starting point with objective function value f = %.12f\n", f >> (fileLog);
+
+    if (f > fBest) && (solve_result_num == 0) then { # if (f > fBest) && (solve_result_num == 0)
+      #===========================================================================
+      # IMPROVE: UPDATE
+      #===========================================================================
+      let {i in 1..N} Xlocal[i] := X[i];     # local update for disks center (X coordinate)
+      let {i in 1..N} Ylocal[i] := Y[i];     # local update for disks center (Y coordinate)
+      let fBest := f;                        # local update for objective function
+      let {i in 1..N} Xbest[i] := Xlocal[i]; # local best update for disks center (X coordinate)
+      let {i in 1..N} Ybest[i] := Ylocal[i]; # local best update for disks center (Y coordinate)
+      let noImprove := 0;                    # reset number of optimization step with no improvement
+      printf "Found better stationary point with objective function f = %.12f\n", f >> (fileLog);
+
+      if (fBest > fMax) then { # if fBest > fMax
+        let fMax := fBest;                    # update maximum of objective function with local best
+        let {i in 1..N} Xmax[i] := Xlocal[i]; # update disks center (X coordinate)
+        let {i in 1..N} Ymax[i] := Ylocal[i]; # update disks center (Y coordinate)
+        let error := abs(fStar-fMax);         # error w.r.t to Fstar
+        if (error < epsilon) then { # if error < epsilon
+          printf "Found global optimum with error %.12f\n", error >> (fileLog);
+          break;
+        } # if error < epsilon
+      } # if fBest > fMax
+    } # if (f > fBest) && (solve_result_num == 0)
+    else { # if (f <= fBest) || (solve_result_num != 0)
+      let noImprove := noImprove+1; # increment number of steps with no improvement
+      printf "No improvement for perturbed point\n" >> (fileLog);
+    } # if (f <= fBest) || (solve_result_num != 0)
+  } # repeat while (noImprove <= maxNoImprove)
+
+  let error := abs(fStar-fMax); # error w.r.t to Fstar
+  if (error < epsilon) then { # if error < epsilon
+    printf "Found global optimum with error %.12f\n", error >> (fileLog);
+    break;
+  } # if error < epsilon
+
+  let noImprove := 0; # reset number of steps with no improvement
+} # for k in 1..maxSearch
+
+#===============================================================================
+# SHOW RESULTS
+#===============================================================================
+
+printf "Elapsed time: %.12f\n", _ampl_elapsed_time >> (fileLog);
+printf "Elapsed time: %.12f\n", _ampl_elapsed_time >> (fileRes);
+
+printf "Number of local optimization steps: %d\n", nLocalOpt >> (fileLog);
+printf "Number of local optimization steps: %d\n", nLocalOpt >> (fileRes);
+
+printf "Best value of distance: %.12f\n", fMax >> (fileLog);
+printf "Best value of distance: %.12f\n", fMax >> (fileRes);
+printf "Best value of radius: %12.6f\n", fMax/(2.0*(fMax+1.0)) >> (fileLog);
+printf "Best value of radius: %12.6f\n", fMax/(2.0*(fMax+1.0)) >> (fileRes);
+
+printf "\n#===============================================================================\n\n" >> (fileLog);
+printf "\n#===============================================================================\n\n" >> (fileRes);
+
+print "Solution:" >> (fileLog);
+print "Solution:" >> (fileRes);
+
+for {i in 1..N} { # for i in 1..N
+  printf "[%d] Center (%.12f,%.12f)\n", i, Xmax[i], Ymax[i] >> (fileLog);
+  printf "[%d] Center (%.12f,%.12f)\n", i, Xmax[i], Ymax[i] >> (fileRes);
+} # for i in 1..N

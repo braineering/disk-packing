@@ -1,5 +1,5 @@
 #===============================================================================
-# DISK PACKING (Script)
+# DISK PACKING EQUIV (Script)
 #===============================================================================
 reset;
 reset options;
@@ -7,8 +7,8 @@ reset options;
 #===============================================================================
 # PROBLEM DECLARATION
 #===============================================================================
-model disk-packing.mod;
-data disk-packing.dat;
+model disk-packing-equiv.mod;
+data disk-packing-equiv.dat;
 
 #===============================================================================
 # AMPL OPTIONS
@@ -47,7 +47,7 @@ let header := sprintf(
 "#===============================================================================\
 | DISK PACKING PROBLEM \
 | Model : disk-packing-equiv.mod \
-| Data  : disk-packing.dat \
+| Data  : disk-packing-equiv.dat \
 | Solver: KNITRO \
 | Author: Giacomo Marciani <gmarciani@acm.org> \
 |        Michele Porretta <mporretta@acm.org> \
@@ -111,7 +111,7 @@ let nLocalOpt := 0;
 
 let fBest := 0.0;
 let fMax  := 0.0;
-let fStar := RSTAR[N];
+let fStar := FSTAR[N];
 let epsilon := 0.0001;
 let xi := 0.5 / sqrt(N);
 

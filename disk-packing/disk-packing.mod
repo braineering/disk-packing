@@ -12,7 +12,6 @@ param N >= 0; # Number of disks
 param NMin >= 2;    # minimum number of disks
 param NMax >= NMin; # maximum number of disks
 param FSTAR {i in NMin..NMax}; # optimal known values (Packomania)
-param RSTAR {i in NMin..NMax}; # optimal known values (Packomania)
 
 #===============================================================================
 # DECISION VARIABLES
