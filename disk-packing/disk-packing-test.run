@@ -34,12 +34,6 @@ let fileTest := ("out/out-"&N&"_test.txt");
 #===============================================================================
 # SOLVER OPTIONS
 #===============================================================================
-
-#option snopt_options "outlev=1";
-#option snopt_options "relax=1";
-#option snopt_options 'Feasibility_tolerance=1.0e-12';
-#option snopt_options 'iterations=1000000';
-#option solver snopt;
 option knitro_options "outlev=1";
 option solver knitro;
 
@@ -63,6 +57,8 @@ let header := sprintf(
 
 print header > (fileTest);
 #print header > (fileLog);
+
+printf "Elapsed Time\tLocal optimizations\tObjective\n" >> (fileTest);
 
 #===============================================================================
 # PROBLEM PARAMETERS
@@ -301,27 +297,6 @@ let endTime := _ampl_elapsed_time; # set end time
 #===============================================================================
 # SHOW RESULTS
 #===============================================================================
+printf "%.12f\t%d\t%.12f\n", (endTime-startTime), nLocalOpt, fMax >> (fileTest);
 
-#printf "Elapsed time: %.12f\n", _ampl_elapsed_time >> (fileLog);
-printf "Elapsed time: %.12f\n", (endTime-startTime) >> (fileTest);
-
-#printf "Local optimizations: %d\n", nLocalOpt >> (fileLog);
-printf "Local optimizations: %d\n", nLocalOpt >> (fileTest);
-
-#printf "\n#===============================================================================\n\n" >> (fileLog);
-#printf "\n#===============================================================================\n\n" >> (fileTest);
-
-#printf "Objective (radius): %.12f\n", fMax >> (fileLog);
-printf "Objective (radius): %.12f\n", fMax >> (fileTest);
-
-#printf "\n#===============================================================================\n\n" >> (fileLog);
-printf "\n#===============================================================================\n\n" >> (fileTest);
-
-#print "Solution:" >> (fileLog);
-#print "Solution:" >> (fileTest);
-
-#for {i in 1..N} { # for i in 1..N
-#  printf "[%d] (%.12f,%.12f)\n", i, Xmax[i], Ymax[i] >> (fileLog);
-#  printf "[%d] (%.12f,%.12f)\n", i, Xmax[i], Ymax[i] >> (fileTest);
-#} # for i in 1..N
 } # for iter in 1..10

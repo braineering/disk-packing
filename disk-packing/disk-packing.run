@@ -34,12 +34,6 @@ let fileLog := ("out/out-"&N&"_log.txt");
 #===============================================================================
 # SOLVER OPTIONS
 #===============================================================================
-
-#option snopt_options "outlev=1";
-#option snopt_options "relax=1";
-#option snopt_options 'Feasibility_tolerance=1.0e-12';
-#option snopt_options 'iterations=1000000';
-#option solver snopt;
 option knitro_options "outlev=1";
 option solver knitro;
 
