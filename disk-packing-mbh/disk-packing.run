@@ -7,8 +7,8 @@ reset options;
 #===============================================================================
 # PROBLEM DECLARATION
 #===============================================================================
-model disk-packing-equiv.mod;
-#model disk-packing.mod;
+#model disk-packing-equiv.mod;
+model disk-packing.mod;
 data disk-packing.dat;
 
 #===============================================================================

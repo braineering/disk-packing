@@ -29,7 +29,7 @@ maximize radius: f; # Maximize disks radius
 # BOUNDS
 #===============================================================================
 subject to noOverlapping {i in 1..N, j in 1..N: j>i}: # Non overlapping disks
-  (X[i]-X[j])**2 + (Y[i]-Y[j])**2 <= 4*(f**2);
+  (X[i]-X[j])**2 + (Y[i]-Y[j])**2 >= 4*(f**2);
 
 subject to containerX_lb {i in 1..N}: # Disks within container (lower bound on disks center X coordinate)
   f <= X[i];
