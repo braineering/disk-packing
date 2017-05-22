@@ -16,9 +16,9 @@ param FSTAR {i in NMin..NMax}; # optimal known values (Packomania)
 #===============================================================================
 # DECISION VARIABLES
 #===============================================================================
-var X {i in 1..N} >= 0.0, <= 1.0; # disks center (X coordinate)
-var Y {i in 1..N} >= 0.0, <= 1.0; # disks center (Y coordinate)
-var f <= 1.0;                     # disks distance
+var X {i in 1..N}; # disks center (X coordinate)
+var Y {i in 1..N}; # disks center (Y coordinate)
+var f;             # disks distance
 
 #===============================================================================
 # OBJECTIVE
