@@ -297,8 +297,8 @@ printf "Local optimizations: %d\n", nLocalOpt >> (fileRes);
 printf "\n#===============================================================================\n\n" >> (fileLog);
 printf "\n#===============================================================================\n\n" >> (fileRes);
 
-printf "Objective: %.12f\n", fMax >> (fileLog);
-printf "Objective: %.12f\n", fMax >> (fileRes);
+printf "Objective (distance): %.12f\n", fMax >> (fileLog);
+printf "Objective (distance): %.12f\n", fMax >> (fileRes);
 
 printf "\n#===============================================================================\n\n" >> (fileLog);
 printf "\n#===============================================================================\n\n" >> (fileRes);
