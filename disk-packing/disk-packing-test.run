@@ -108,6 +108,8 @@ param epsilon;       # epsilon (used for error tolerance)
 param startTime;     # the time at the beginning of an iteration
 param endTime;       # the time at the end of an iteration
 
+for {iter in 1..10} { # for iter in 1..10
+
 let maxSearch := 1000;
 let maxNoImprove := 100;
 let noImprove := 0;
@@ -118,8 +120,6 @@ let fMax  := 0.0;
 let fStar := FSTAR[N];
 let epsilon := 0.0001;
 let xi := 0.5 / sqrt(N);
-
-for {iter in 1..10} { # for iter in 1..10
 
 let startTime := _ampl_elapsed_time; # reset start time
 let nLocalOpt := 0;                  # reset number of local optimizations
@@ -298,5 +298,44 @@ let endTime := _ampl_elapsed_time; # set end time
 # SHOW RESULTS
 #===============================================================================
 printf "%.12f\t%d\t%.12f\n", (endTime-startTime), nLocalOpt, fMax >> (fileTest);
+
+#===============================================================================
+# RESET
+#===============================================================================
+reset data Xstart;  # initial    disks center (X coordinate)
+reset data Ystart;  # initial    disks center (Y coordinate)
+reset data Xlocal;  # local      disks center (X coordinate)
+reset data Ylocal;  # local      disks center (Y coordinate)
+reset data Xtilde;  # perturbed  disks center (X coordinate)
+reset data Ytilde;  # perturbed  disks center (Y coordinate)
+
+reset data Xbest;   # local best disks center (X coordinate)
+reset data Ybest;   # local best disks center (Y coordinate)
+reset data Xmax;    # best       disks center (X coordinate)
+reset data Ymax;    # best       disks center (Y coordinate)
+
+reset data Xpert;   # perturbation for disks center (X coordinate)
+reset data Ypert;   # perturbation for disks center (Y coordinate)
+reset data XpertLb; # lower bound for perturbation (X coordinate)
+reset data XpertUb; # upper bound for perturbation (X coordinate)
+reset data YpertUb; # lower bound for perturbation (X coordinate)
+reset data YpertLb; # lower bound for perturbation (X coordinate)
+reset data xi;            # perturbation degree
+#reset data FpertUb;      # upper bound for pertubation (objective function)
+
+reset data maxSearch;     # maximum number of outer loop iterations
+reset data maxNoImprove;  # maximum number of optimization steps with no improvement
+reset data noImprove;     # number of local steps with no improvement
+reset data nLocalOpt;     # number of local optimization steps
+
+reset data fBest;         # objective function for current local best
+reset data fMax;          # objective function for current best
+reset data fStar;         # objective function for global optimum
+
+reset data error;         # error w.r.t. Fstar
+reset data epsilon;       # epsilon (used for error tolerance)
+
+reset data startTime;     # the time at the beginning of an iteration
+reset data endTime;       # the time at the end of an iteration
 
 } # for iter in 1..10
