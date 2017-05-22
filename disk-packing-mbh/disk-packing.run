@@ -7,7 +7,6 @@ reset options;
 #===============================================================================
 # PROBLEM DECLARATION
 #===============================================================================
-#model disk-packing-equiv.mod;
 model disk-packing.mod;
 data disk-packing.dat;
 
@@ -112,7 +111,7 @@ let nLocalOpt := 0;
 
 let fBest := 0.0;
 let fMax  := 0.0;
-let fStar := FSTAR[N];
+let fStar := RSTAR[N];
 let epsilon := 0.0001;
 let xi := 0.5 / sqrt(N);
 

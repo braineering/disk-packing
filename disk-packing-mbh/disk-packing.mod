@@ -12,6 +12,7 @@ param N >= 0; # Number of disks
 param NMin >= 2;    # minimum number of disks
 param NMax >= NMin; # maximum number of disks
 param FSTAR {i in NMin..NMax}; # optimal known values (Packomania)
+param RSTAR {i in NMin..NMax}; # optimal known values (Packomania)
 
 #===============================================================================
 # DECISION VARIABLES
@@ -28,17 +29,17 @@ maximize radius: f; # Maximize disks radius
 #===============================================================================
 # BOUNDS
 #===============================================================================
-subject to noOverlapping {i in 1..N, j in 1..N: j>i}: # Non overlapping disks
+subject to noOverlapping {i in 1..N, j in 1..N: i<j}: # Non overlapping disks
   (X[i]-X[j])**2 + (Y[i]-Y[j])**2 >= 4*(f**2);
 
 subject to containerX_lb {i in 1..N}: # Disks within container (lower bound on disks center X coordinate)
-  f <= X[i];
+  X[i] >= f;
 
-subject to containerX2_ub {i in 1..N}: # Disks within container (upper bound on disks center X coordinate)
-  X[i] <= 1-f;
+subject to containerX_ub {i in 1..N}: # Disks within container (upper bound on disks center X coordinate)
+  X[i] <= 1.0-f;
 
 subject to containerY_lb {i in 1..N}: # Disks within container (lower bound on disks center Y coordinate)
-  f <= Y[i];
+  Y[i] >= f;
 
-subject to containerY2_ub {i in 1..N}: # Disks within container (upper bound on disks center Y coordinate)
-  Y[i] <= 1-f;
+subject to containerY_ub {i in 1..N}: # Disks within container (upper bound on disks center Y coordinate)
+  Y[i] <= 1.0-f;
