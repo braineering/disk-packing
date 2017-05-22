@@ -9,33 +9,36 @@ reset;
 # PARAMETERS
 #===============================================================================
 param N >= 0; # Number of disks
+param NMin >= 2;    # minimum number of disks
+param NMax >= NMin; # maximum number of disks
+param FSTAR {i in NMin..NMax}; # optimal known values (Packomania)
 
 #===============================================================================
 # DECISION VARIABLES
 #===============================================================================
-var X{i in 1..N} := Uniform(0,1), >=0, <=1; # Disks center (X coordinate)
-var Y{i in 1..N} := Uniform(0,1), >=0, <=1; # Disks center (Y coordinate)
-var r            := Uniform(0,1), >=0, <=1; # Disks radius
+var X {i in 1..N} >= 0.0, <= 1.0; # disks center (X coordinate)
+var Y {i in 1..N} >= 0.0, <= 1.0; # disks center (Y coordinate)
+var f <= 1.0;                     # disks distance
 
 #===============================================================================
 # OBJECTIVE
 #===============================================================================
-maximize f: r; # Maximize disks radius
+maximize radius: f; # Maximize disks radius
 
 #===============================================================================
 # BOUNDS
 #===============================================================================
 subject to noOverlapping {i in 1..N, j in 1..N: j>i}: # Non overlapping disks
-  (X[i]-X[j])**2 + (Y[i]-Y[j])**2 <= 4*(r**2);
+  (X[i]-X[j])**2 + (Y[i]-Y[j])**2 <= 4*(f**2);
 
 subject to containerX_lb {i in 1..N}: # Disks within container (lower bound on disks center X coordinate)
-  r <= X[i];
+  f <= X[i];
 
 subject to containerX2_ub {i in 1..N}: # Disks within container (upper bound on disks center X coordinate)
-  X[i] <= 1-r;
+  X[i] <= 1-f;
 
 subject to containerY_lb {i in 1..N}: # Disks within container (lower bound on disks center Y coordinate)
-  r <= Y[i];
+  f <= Y[i];
 
 subject to containerY2_ub {i in 1..N}: # Disks within container (upper bound on disks center Y coordinate)
-  Y[i] <= 1-r;
+  Y[i] <= 1-f;
