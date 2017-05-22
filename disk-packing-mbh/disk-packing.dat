@@ -5,7 +5,7 @@
 data;
 
 let N := 10;     # current number of disks
-let NMin := 1;   # minimum number of disks
+let NMin := 2;   # minimum number of disks
 let NMax := 200; # maximum number of disks
 
 # optimal values according to Packomania
