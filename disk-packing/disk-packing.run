@@ -54,7 +54,8 @@ let header := sprintf(
 |\
 | Parameters: \
 |  N: %d \
-#==============================================================================\n");
+#===============================================================================\
+");
 
 print header > (fileRes);
 print header > (fileLog);
@@ -290,13 +291,14 @@ for {k in 1..maxSearch}{ # for k in maxSearch
 printf "Elapsed time: %.12f\n", _ampl_elapsed_time >> (fileLog);
 printf "Elapsed time: %.12f\n", _ampl_elapsed_time >> (fileRes);
 
-printf "Number of local optimization steps: %d\n", nLocalOpt >> (fileLog);
-printf "Number of local optimization steps: %d\n", nLocalOpt >> (fileRes);
+printf "Local optimizations: %d\n", nLocalOpt >> (fileLog);
+printf "Local optimizations: %d\n", nLocalOpt >> (fileRes);
 
-printf "Best value of distance: %.12f\n", fMax >> (fileLog);
-printf "Best value of distance: %.12f\n", fMax >> (fileRes);
-printf "Best value of radius: %12.6f\n", fMax/(2.0*(fMax+1.0)) >> (fileLog);
-printf "Best value of radius: %12.6f\n", fMax/(2.0*(fMax+1.0)) >> (fileRes);
+printf "\n#===============================================================================\n\n" >> (fileLog);
+printf "\n#===============================================================================\n\n" >> (fileRes);
+
+printf "Objective: %.12f\n", fMax >> (fileLog);
+printf "Objective: %.12f\n", fMax >> (fileRes);
 
 printf "\n#===============================================================================\n\n" >> (fileLog);
 printf "\n#===============================================================================\n\n" >> (fileRes);
@@ -305,6 +307,6 @@ print "Solution:" >> (fileLog);
 print "Solution:" >> (fileRes);
 
 for {i in 1..N} { # for i in 1..N
-  printf "[%d] Center (%.12f,%.12f)\n", i, Xmax[i], Ymax[i] >> (fileLog);
-  printf "[%d] Center (%.12f,%.12f)\n", i, Xmax[i], Ymax[i] >> (fileRes);
+  printf "[%d] (%.12f,%.12f)\n", i, Xmax[i], Ymax[i] >> (fileLog);
+  printf "[%d] (%.12f,%.12f)\n", i, Xmax[i], Ymax[i] >> (fileRes);
 } # for i in 1..N
