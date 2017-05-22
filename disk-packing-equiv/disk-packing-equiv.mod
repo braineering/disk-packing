@@ -1,9 +1,13 @@
 #===============================================================================
-# DISK PACKING (Model)
+# DISK PACKING PROBLEM, EQUIVALENT FORMULATION (Model)
 #
 # Find the positions of N points inside the unit square
 # in such a way that their minimum pairwise distance d is maximized.
+#
+# Authors: Giacomo Marciani <gmarciani@acm.org>
+#          Michele Porretta <mporretta@acm.org>
 #===============================================================================
+
 reset;
 
 #===============================================================================

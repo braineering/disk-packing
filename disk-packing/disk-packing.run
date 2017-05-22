@@ -1,6 +1,10 @@
 #===============================================================================
-# DISK PACKING (Script)
+# DISK PACKING PROBLEM (Script)
+#
+# Authors: Giacomo Marciani <gmarciani@acm.org>
+#          Michele Porretta <mporretta@acm.org>
 #===============================================================================
+
 reset;
 reset options;
 

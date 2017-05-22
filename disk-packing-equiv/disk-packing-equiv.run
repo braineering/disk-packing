@@ -1,5 +1,8 @@
 #===============================================================================
-# DISK PACKING EQUIV (Script)
+# DISK PACKING PROBLEM, EQUIVALENT FORMULATION (Script)
+#
+# Authors: Giacomo Marciani <gmarciani@acm.org>
+#          Michele Porretta <mporretta@acm.org>
 #===============================================================================
 reset;
 reset options;

@@ -1,5 +1,8 @@
 #===============================================================================
-# DISK PACKING (Data)
+# DISK PACKING PROBLEM (Data)
+#
+# Authors: Giacomo Marciani <gmarciani@acm.org>
+#          Michele Porretta <mporretta@acm.org>
 #===============================================================================
 
 data;

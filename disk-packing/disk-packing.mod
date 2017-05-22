@@ -1,7 +1,10 @@
 #===============================================================================
-# DISK PACKING (Model)
+# DISK PACKING PROBLEM (Model)
 #
 # Maximize the radius and number of non-overlapping disks in the unit square.
+#
+# Authors: Giacomo Marciani <gmarciani@acm.org>
+#          Michele Porretta <mporretta@acm.org>
 #===============================================================================
 reset;
 
