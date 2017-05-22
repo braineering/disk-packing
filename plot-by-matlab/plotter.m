@@ -29,7 +29,7 @@ for i = 1:limit
     
     % make circle
     theta = 0:pi/50:2*pi;
-    radius = 0.148204;
+    radius = 0.01;
     x = radius * cos(theta) + xCenter;
     y = radius * sin(theta) + yCenter;
     
