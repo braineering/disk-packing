@@ -1,0 +1,14 @@
+#===============================================================================
+| DISK PACKING PROBLEM 
+| Model : disk-packing-equiv.mod 
+| Data  : disk-packing-equiv.dat 
+| Solver: KNITRO 
+| Author: Giacomo Marciani <gmarciani@acm.org> 
+|         Michele Porretta <mporretta@acm.org> 
+|
+| Parameters: 
+|  N: 125 
+#==============================================================================
+
+Elapsed Time	Local optimizations	Objective
+6021.000000000000	721.0	0.101173067088
