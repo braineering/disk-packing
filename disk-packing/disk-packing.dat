@@ -7,7 +7,7 @@
 
 data;
 
-let N := 50;     # current number of disks
+let N := 79;     # current number of disks
 let NMin := 2;   # minimum number of disks
 let NMax := 200; # maximum number of disks
 

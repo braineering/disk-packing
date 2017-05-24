@@ -13,7 +13,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Read radius and centers of circles from file
-path = '/out-135_res.txt';
+path = '/out-145_res.txt';
 f = fopen(path);
 
 start = 0;
@@ -27,7 +27,8 @@ while feof(f) == 0
     if startsWith(line,'Objective (radius):')
        toks = regexp(line,'^Objective \(radius\): (?<radius>\d+(?:\.\d+){0,1})$','tokens');
        radius = str2double(toks{1}{1});
-       disp(radius)
+       disp(radius);
+       equivalent_model = 0;    
        
        % start parsing centers
     elseif strcmp(line,'Solution:') == 1
@@ -49,7 +50,6 @@ while feof(f) == 0
        % plot
        hold on;
        plot(x, y);
-       title('\fontsize{24}\color{red}N = 135 - EQUIVALENT MODEL');
        axis square;
        xlim([0 1]);
        ylim([0 1]);
