@@ -1,0 +1,228 @@
+#===============================================================================
+| DISK PACKING PROBLEM 
+| Model : disk-packing.mod 
+| Data  : disk-packing.dat 
+| Solver: KNITRO 
+| Author: Giacomo Marciani <gmarciani@acm.org> 
+|         Michele Porretta <mporretta@acm.org> 
+|
+| Parameters: 
+|  N: 50 
+#===============================================================================
+
+Found stationary point with objective function f = 0.070193759215
+Perturbed starting point with objective function value f = 0.070193759215
+Perturbed starting point with objective function value f = 0.069965781501
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.069965781501
+Perturbed starting point with objective function value f = 0.070362347586
+Found better stationary point with objective function f = 0.070362347586
+Perturbed starting point with objective function value f = 0.070362347586
+Perturbed starting point with objective function value f = 0.071061575476
+Found better stationary point with objective function f = 0.071061575476
+Perturbed starting point with objective function value f = 0.071061575476
+Perturbed starting point with objective function value f = 0.070713352999
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.070713352999
+Perturbed starting point with objective function value f = 0.071035198808
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.071035198808
+Perturbed starting point with objective function value f = 0.070679758611
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.070679758611
+Perturbed starting point with objective function value f = 0.070682385109
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.070682385109
+Perturbed starting point with objective function value f = 0.070924618533
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.070924618533
+Perturbed starting point with objective function value f = 0.071145794856
+Found better stationary point with objective function f = 0.071145794856
+Perturbed starting point with objective function value f = 0.071145794856
+Perturbed starting point with objective function value f = 0.071173485864
+Found better stationary point with objective function f = 0.071173485864
+Perturbed starting point with objective function value f = 0.071173485864
+Perturbed starting point with objective function value f = 0.071040604225
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.071040604225
+Perturbed starting point with objective function value f = 0.070302210272
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.070302210272
+Perturbed starting point with objective function value f = 0.070760100534
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.070760100534
+Perturbed starting point with objective function value f = 0.070179600466
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.070179600466
+Perturbed starting point with objective function value f = 0.070250201128
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.070250201128
+Perturbed starting point with objective function value f = 0.069413486478
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.069413486478
+Perturbed starting point with objective function value f = 0.070237583555
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.070237583555
+Perturbed starting point with objective function value f = 0.070650282757
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.070650282757
+Perturbed starting point with objective function value f = 0.070476935290
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.070476935290
+Perturbed starting point with objective function value f = 0.070994523073
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.070994523073
+Perturbed starting point with objective function value f = 0.069610810094
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.069610810094
+Perturbed starting point with objective function value f = 0.071093577151
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.071093577151
+Perturbed starting point with objective function value f = 0.071048319579
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.071048319579
+Perturbed starting point with objective function value f = 0.069535434037
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.069535434037
+Perturbed starting point with objective function value f = 0.069786060454
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.069786060454
+Perturbed starting point with objective function value f = 0.069226437026
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.069226437026
+Perturbed starting point with objective function value f = 0.068933493844
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.068933493844
+Perturbed starting point with objective function value f = 0.071131558293
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.071131558293
+Perturbed starting point with objective function value f = 0.071041590781
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.071041590781
+Perturbed starting point with objective function value f = 0.071084589680
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.071084589680
+Perturbed starting point with objective function value f = 0.069745862642
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.069745862642
+Perturbed starting point with objective function value f = 0.070486720277
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.070486720277
+Perturbed starting point with objective function value f = 0.069412083572
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.069412083572
+Perturbed starting point with objective function value f = 0.069839538478
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.069839538478
+Perturbed starting point with objective function value f = 0.069781189245
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.069781189245
+Perturbed starting point with objective function value f = 0.070452795023
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.070452795023
+Perturbed starting point with objective function value f = 0.070778510661
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.070778510661
+Perturbed starting point with objective function value f = 0.070759423562
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.070759423562
+Perturbed starting point with objective function value f = 0.068978938445
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.068978938445
+Perturbed starting point with objective function value f = 0.071134676876
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.071134676876
+Perturbed starting point with objective function value f = 0.069701078521
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.069701078521
+Perturbed starting point with objective function value f = 0.071049886891
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.071049886891
+Perturbed starting point with objective function value f = 0.070415363490
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.070415363490
+Perturbed starting point with objective function value f = 0.069579306485
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.069579306485
+Perturbed starting point with objective function value f = 0.070576617765
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.070576617765
+Perturbed starting point with objective function value f = 0.070031561612
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.070031561612
+Perturbed starting point with objective function value f = 0.069550436037
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.069550436037
+Perturbed starting point with objective function value f = 0.071130598889
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.071130598889
+Perturbed starting point with objective function value f = 0.071097225420
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.071097225420
+Perturbed starting point with objective function value f = 0.071070885324
+No improvement for perturbed point
+Perturbed starting point with objective function value f = 0.071070885324
+Perturbed starting point with objective function value f = 0.071322471251
+Found better stationary point with objective function f = 0.071322471251
+Found global optimum with error 0.000054632614
+Found global optimum with error 0.000054632614
+Elapsed time: 27.000000000000
+Local optimizations: 52
+
+#===============================================================================
+
+Objective (radius): 0.071322471251
+
+#===============================================================================
+
+Solution:
+[1] (0.570572125585,0.558076664284)
+[2] (0.071322541032,0.273538572963)
+[3] (0.926483450844,0.073772040415)
+[4] (0.928585322461,0.680838259190)
+[5] (0.141638943441,0.804566372689)
+[6] (0.786032381061,0.928677278648)
+[7] (0.343888762214,0.194856628776)
+[8] (0.071322481164,0.416183585468)
+[9] (0.499257278407,0.928677527641)
+[10] (0.643387252636,0.928677424553)
+[11] (0.795951270460,0.441875879151)
+[12] (0.581898977315,0.071322473736)
+[13] (0.928677527092,0.246968890064)
+[14] (0.427927170585,0.558070670980)
+[15] (0.071322472553,0.928675941554)
+[16] (0.785799440156,0.681126866452)
+[17] (0.171944349578,0.172430486118)
+[18] (0.213967416136,0.928677527665)
+[19] (0.724554101183,0.318384889533)
+[20] (0.724573485183,0.071322471984)
+[21] (0.427232650953,0.310620963418)
+[22] (0.415211243925,0.071322478117)
+[23] (0.356612362899,0.928677521060)
+[24] (0.498555119006,0.187086812571)
+[25] (0.071322493644,0.071322493520)
+[26] (0.071322474659,0.680135199174)
+[27] (0.212681773012,0.435292034742)
+[28] (0.857583797976,0.804761868199)
+[29] (0.569892389837,0.310612427683)
+[30] (0.928677527103,0.389613836678)
+[31] (0.571322089861,0.805574956772)
+[32] (0.125453186024,0.548159987290)
+[33] (0.713217080648,0.558076713501)
+[34] (0.272566217367,0.071322489957)
+[35] (0.243266895029,0.295964605739)
+[36] (0.642645522504,0.682041366451)
+[37] (0.499999522182,0.682040724225)
+[38] (0.928677395014,0.928541939068)
+[39] (0.641214891578,0.434152573787)
+[40] (0.926146154033,0.537814480935)
+[41] (0.285282214858,0.558079482784)
+[42] (0.356612335030,0.681609224191)
+[43] (0.213959771252,0.681613646517)
+[44] (0.355319315979,0.433812088027)
+[45] (0.795891351549,0.194859275712)
+[46] (0.498569927616,0.434146578085)
+[47] (0.285289884813,0.805143381472)
+[48] (0.653236235394,0.194848083616)
+[49] (0.714874355666,0.805048056875)
+[50] (0.427934830572,0.805143367240)
